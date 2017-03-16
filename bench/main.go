@@ -2,9 +2,9 @@ package main
 
 import (
 	"fmt"
-	"github.com/robert-king/fast-anagram/algorithms"
 	"time"
 	"github.com/pkg/profile"
+	"github.com/robert-king/fast-anagram/algorithms"
 )
 
 var now time.Time
@@ -18,8 +18,7 @@ func p(s string) {
 	now = time.Now()
 }
 
-func main() {
-	defer profile.Start().Stop()
+func runWithAnagrams() {
 	words, err := algorithms.ReadWords()
 	if err != nil {
 		fmt.Println("error reading words")
@@ -57,4 +56,13 @@ func main() {
 	}
 
 	p("basic")
+}
+
+
+func main() {
+	defer profile.Start().Stop()
+	runWithAnagrams()
+	//adv 2.210262363s
+	//basic 1.681843672s
+
 }

@@ -1,12 +1,8 @@
-package algorithms
+package hashmap
 
-import (
-	"github.com/draffensperger/golp"
-	"fmt"
-)
+import "github.com/draffensperger/golp"
 
-const numOnes = uint64(20)
-const ones = uint64(1 << numOnes - 1)
+var BitScoreCache [5000][5000]uint16 //constant once written, could be dedicated piece of readonly memory, shared by OS
 
 func diffBit(a, b, i uint64) bool {
 	return (a >> i) & 1 != (b >> i) & 1
@@ -35,6 +31,14 @@ func checkBitsDistinguishNums(nums []uint64, bits []uint16) bool {
 		offsets[offset] = true
 	}
 	return true
+}
+
+func bitsToInt(bits []uint16) uint16 {
+	bitNum := 0
+	for _, bit := range bits {
+		bitNum += 1 << bit
+	}
+	return uint16(bitNum)
 }
 
 func minimumDistinguishingBits(nums []uint64) (bits []uint16) {
@@ -134,9 +138,15 @@ func minimumDistinguishingBits(nums []uint64) (bits []uint16) {
 		}
 	}
 
-	fmt.Println("Likely solution not found but found ", bits)
+	println(bits)
 
 	return bits
+}
+
+func addToBitScoreCash(num uint64, bits []uint16, score uint16) {
+	bitsNum := bitsToInt(bits)
+	matchedBits := bitsNum & uint16(num)
+	BitScoreCache[bitsNum][matchedBits] = score
 }
 
 func bitScore(num uint64, bits []uint16) (score uint16) {
@@ -145,6 +155,7 @@ func bitScore(num uint64, bits []uint16) (score uint16) {
 			score += 1 << bit
 		}
 	}
+	addToBitScoreCash(num, bits, score)
 	return score
 }
 
@@ -159,73 +170,3 @@ func maxBitScore(nums []uint64, bits []uint16) uint16 {
 	return mx
 }
 
-type Locator struct {
-	collisions [ones+1][]uint64
-	bits [ones+1][]uint16
-	starts [ones+1]uintptr
-	maxIndex uintptr
-}
-
-func NewLocator(hashes []uint64) *Locator {
-	var collisions [ones+1][]uint64
-	var bits [ones+1][]uint16
-	var starts [ones+1]uintptr
-
-	for _, hash := range hashes {
-		part := hash & ones
-		remaining := hash >> numOnes
-		collisions[part] = append(collisions[part], remaining)
-	}
-	start := uintptr(1)
-	for part, nums := range collisions {
-		if len(nums) == 0 {
-			continue
-		}
-		bits[part] = minimumDistinguishingBits(nums)
-		if !checkBitsDistinguishNums(nums, bits[part]) {
-			fmt.Println("ERROR!")
-		}
-		//if len(nums) > 1 {
-		//	fmt.Println("nums", nums)
-		//	fmt.Println("bits", bits[part])
-		//}
-		starts[part] = start
-		start += uintptr(maxBitScore(nums, bits[part])) + 1
-	}
-	locator := &Locator{
-		collisions: collisions,
-		bits: bits,
-		starts: starts,
-		maxIndex: start,
-	}
-	return locator
-}
-
-func (locator *Locator) UpdateStarts(start, size uintptr) {
-	for i := range locator.starts {
-		if locator.starts[i] > 0 {
-			locator.starts[i] =  start + locator.starts[i] * size
-		}
-	}
-}
-
-func (locator *Locator) Index(num uint64) uintptr {
-	part := num & ones
-	remaining := num >> numOnes
-	start := locator.starts[part]
-	bits := locator.bits[part]
-	offset := 24*uintptr(bitScore(remaining, bits))
-	return start + offset
-}
-
-func (locator *Locator) Index1(num uint64) uintptr {
-	part := num & ones
-	//remaining := num >> numOnes
-	//start := locator.starts[part]
-	//bits := locator.bits[part]
-	//offset := bitScore(num >> numOnes, locator.bits[part])
-	if len(locator.collisions[part]) == 1 {
-		return locator.starts[part]
-	}
-	return locator.starts[part] + uintptr(bitScore(num >> numOnes, locator.bits[part]))
-}

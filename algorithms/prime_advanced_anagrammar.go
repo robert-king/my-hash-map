@@ -1,12 +1,12 @@
 package algorithms
 
 import (
-	"unsafe"
+	"github.com/robert-king/fast-anagram/hashmap"
 )
 
 type PrimeAdvancedAnagrammar struct {
 	m [][]string
-	locator *Locator
+	locator *hashmap.Map
 }
 
 func BuildPrimeAdvancedAnagrammar(words []string) PrimeAdvancedAnagrammar {
@@ -19,18 +19,14 @@ func BuildPrimeAdvancedAnagrammar(words []string) PrimeAdvancedAnagrammar {
 		hashes = append(hashes, hash)
 	}
 
-	locator := NewLocator(hashes)
-	grams := make([][]string, locator.maxIndex)
+	locator, maxIdx := hashmap.NewMap(hashes)
+	grams := make([][]string, maxIdx)
 	for _, word := range words {
-		idx := locator.Index1(PrimeProduct(word))
+		idx := locator.Index(PrimeProduct(word))
 		grams[idx] = append(grams[idx], word)
 	}
-	start := uintptr(unsafe.Pointer(&grams[0]))
-	size := unsafe.Sizeof(grams[0])
-	locator.UpdateStarts(start, size)
 	println(len(words))
 	println(len(grams))
-	println(len(locator.starts))
 	return PrimeAdvancedAnagrammar{
 		m: grams,
 		locator: locator,
@@ -38,5 +34,5 @@ func BuildPrimeAdvancedAnagrammar(words []string) PrimeAdvancedAnagrammar {
 }
 
 func (pa PrimeAdvancedAnagrammar) GetAnagrams(word string) []string {
-	return *(*[]string)(unsafe.Pointer(pa.locator.Index(PrimeProduct(word))))
+	return pa.m[pa.locator.Index(PrimeProduct(word))]
 }
