@@ -1,6 +1,6 @@
 package hashmap
 
-const numOnes = uint8(20)
+const numOnes = uint8(18)
 const ones = uint32(1<<numOnes - 1)
 
 type Info struct {
@@ -55,6 +55,11 @@ func (m *Map) Index(num uint64) uint32 {
 	//	return info.start + uint32(1)
 	//}
 
-	offset := BitScoreCache[matchedBits*4100+info.bitNum]
+	offset := uint16(0)
+	if info.bitNum < MaxBitNumCache {
+		offset = BitScoreCache[matchedBits*MaxBitNumCache+info.bitNum]
+	} else {
+		offset = bitScoreFromInt(matchedBits, info.bitNum)
+	}
 	return info.start + uint32(offset)
 }

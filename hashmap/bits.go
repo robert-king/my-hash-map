@@ -2,7 +2,9 @@ package hashmap
 
 import "github.com/draffensperger/golp"
 
-var BitScoreCache [60000]uint16 //constant once written, could be dedicated piece of readonly memory, shared by OS. Also can reduce size by using greedy algorithm in minimumDistinguishingBits
+
+const MaxBitNumCache = 100
+var BitScoreCache [MaxBitNumCache*MaxBitNumCache]uint16 //idea is this cache can be shared amoungst multiple hashmap instances. Doesn't seem to help performance much though.
 
 func diffBit(a, b, i uint64) bool {
 	return (a>>i)&1 != (b>>i)&1
@@ -142,15 +144,20 @@ func minimumDistinguishingBits(nums []uint64) (bits []uint16) {
 		}
 	}
 
-	println(bits)
+	if len(bits) > 5 {
+		println("wow", bits)
+	}
+	//println(bits)
 
 	return bits
 }
 
 func addToBitScoreCash(num uint64, bits []uint16, score uint16) {
 	bitsNum := bitsToInt(bits)
-	matchedBits := bitsNum & uint16(num)
-	BitScoreCache[bitsNum+4100*matchedBits] = score
+	if bitsNum < MaxBitNumCache {
+		matchedBits := bitsNum & uint16(num)
+		BitScoreCache[bitsNum+MaxBitNumCache*matchedBits] = score
+	}
 }
 
 func bitScore(num uint64, bits []uint16) (score uint16) {
@@ -162,6 +169,20 @@ func bitScore(num uint64, bits []uint16) (score uint16) {
 	addToBitScoreCash(num, bits, score)
 	return score
 }
+
+func bitScoreFromInt(matchedBits uint16, bits uint16) (score uint16) {
+	j := uint16(1)
+	for i := uint16(1); i <= bits; i <<= 1 {
+		if bits & i > 0 {
+			if uint16(matchedBits) & i > 0 {
+				score += j
+			}
+			j *= 2
+		}
+	}
+	return score
+}
+
 
 func maxBitScore(nums []uint64, bits []uint16) uint16 {
 	mx := uint16(0)

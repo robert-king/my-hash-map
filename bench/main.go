@@ -41,8 +41,10 @@ func runWithAnagrams() {
 	}
 	p("checked valid")
 
+	tests := 500
+
 	for _, w := range words {
-		for i := 0; i < 50; i++ {
+		for i := 0; i < tests; i++ {
 			adv.GetAnagrams(w)
 		}
 	}
@@ -50,7 +52,23 @@ func runWithAnagrams() {
 	p("adv")
 
 	for _, w := range words {
-		for i := 0; i < 50; i++ {
+		for i := 0; i < tests; i++ {
+			basic.GetAnagrams(w)
+		}
+	}
+
+	p("basic")
+
+	for i := 0; i < tests; i++ {
+		for _, w := range words {
+			adv.GetAnagrams(w)
+		}
+	}
+
+	p("adv")
+
+	for i := 0; i < tests; i++ {
+		for _, w := range words {
 			basic.GetAnagrams(w)
 		}
 	}
@@ -59,9 +77,11 @@ func runWithAnagrams() {
 }
 
 func main() {
-	defer profile.Start().Stop()
+	defer profile.Start(profile.MemProfile).Stop()
 	runWithAnagrams()
-	//adv 2.210262363s
-	//basic 1.681843672s
+	//adv 5.280358926s
+	//basic 6.118879895s
+	//adv 19.165513092s
+	//basic 16.734885256s
 
 }

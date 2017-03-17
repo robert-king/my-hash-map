@@ -8,6 +8,12 @@ Average read speed compared to STD-Lib for 178693 words anagrams:
 
 Write / Build speed: 2x slower than STD-Lib (although haven't optimised this)
 
+Memory:
+Currently it actually uses **LESS memory than would be required to store the keys themselves**.
+This is because it stores only the parts of the keys that are needed to resolve collisions.
+To allow for inserts, we would need to store the whole key, and upon insertion, figure out if we need an extra bit in bitNums to distinguish.
+
+
 
 Currently assumes list of keys is known ahead of time, although simple enough changes could be made to allow growing, inserts etc.
 
@@ -29,3 +35,5 @@ https://www.goinggo.net/2013/12/macro-view-of-map-internals-in-go.html
 https://github.com/golang/go/blob/master/src/runtime/hashmap.go
 
 would be interesting to bench against minimal perfect hashing e.g. https://github.com/alecthomas/mph
+
+good link explaining std-lib implementation https://www.youtube.com/watch?v=Tl7mi9QmLns
