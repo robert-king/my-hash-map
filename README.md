@@ -4,6 +4,12 @@ Toy hashmap that can be faster than STD-Lib in some situations.
 It's a bit dangerous - e.g. uint16 overflows possible, and it doesn't allow inserts or anything.
 Would probably be hard to make it general purpose, although the idea of reducing collisions by distinguishing between bits is interesting because it allows compression / focus on only important parts of the keys, relative to other keys.
 
+
+the reason it's dangerous:
+from a 64 bit key, it uses the first ~18 bits for buckets (depends on numBuckets)
+then, it uses only 16bits to decide about the other (64-18=46) bits. This assumes there aren't too many collisions.
+
+
 Performance (I wouldn't say I have the most accurate measurements so take this with a grain of salt):
 
 Average read speed compared to STD-Lib for 178693 words anagrams:
