@@ -10,7 +10,7 @@ Average read speed compared to STD-Lib for 178693 words anagrams:
 15% faster if no cache misses
 15% slower if all cache misses.
 
-Write / Build speed: 2x slower than STD-Lib (although haven't optimised this)
+Write / Build speed: 2x slower than STD-Lib (although haven't optimised this, could probably be faster than std-lib if use greedy algorithm)
 
 Memory:
 Currently it actually uses **LESS memory than would be required to store the keys themselves**.
