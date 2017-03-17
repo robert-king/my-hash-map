@@ -4,7 +4,7 @@ import "github.com/draffensperger/golp"
 
 
 const MaxBitNumCache = 100
-var BitScoreCache [MaxBitNumCache*MaxBitNumCache]uint16 //idea is this cache can be shared amoungst multiple hashmap instances. Doesn't seem to help performance much though.
+var BitScoreCache [MaxBitNumCache*MaxBitNumCache]uint16 //idea is this cache can be shared by multiple hashmap instances. Doesn't seem to help performance much though.
 
 func diffBit(a, b, i uint64) bool {
 	return (a>>i)&1 != (b>>i)&1
@@ -44,6 +44,9 @@ func bitsToInt(bits []uint16) uint16 {
 }
 
 func minimumDistinguishingBits(nums []uint64) (bits []uint16) {
+	//there is a greedy algorithm for this that's  accurate enough
+	//so perhaps insertions could work with the greedy algorithm state
+	//to update bits in a way that doesnt affect many numbers.
 	if len(nums) == 1 {
 		return bits
 	}
