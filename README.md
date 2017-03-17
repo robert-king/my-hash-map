@@ -4,7 +4,7 @@ Toy hashmap that can be faster than STD-Lib in some situations.
 It's a bit dangerous - e.g. uint16 overflows possible, and it doesn't allow inserts or anything.
 Would probably be hard to make it general purpose, although the idea of reducing collisions by distinguishing between bits is interesting because it allows compression / focus on only important parts of the keys, relative to other keys.
 
-Performance:
+Performance (I wouldn't say I have the most accurate measurements so take this with a grain of salt):
 
 Average read speed compared to STD-Lib for 178693 words anagrams:
 15% faster if no cache misses
