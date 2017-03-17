@@ -13,6 +13,7 @@ func BuildPrimeBasicAnagrammar(words []string) PrimeBasicAnagrammar {
 		h := PrimeProduct(word)
 		pba.m[h] = append(pba.m[h], word)
 	}
+	println(len(pba.m), "!!")
 	return pba
 }
 

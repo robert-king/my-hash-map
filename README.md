@@ -2,17 +2,14 @@
 
 Performance:
 
-batch writes twice as slow, reads 28% slower, than std-lib
+Average read speed compared to STD-Lib for 178693 words anagrams:
+15% faster if no cache misses
+15% slower if all cache misses.
 
-memory usage is roughly:
-
-type Map struct {
-	bitNums [1.5*N]uint16
-	starts [1.5*N]uint32
-}
+Write / Build speed: 2x slower than STD-Lib (although haven't optimised this)
 
 
-Currently assumes list of keys is known ahead of time, although changes could be made to allow growing, inserts etc.
+Currently assumes list of keys is known ahead of time, although simple enough changes could be made to allow growing, inserts etc.
 
 It works on 64 bit numbers for now.
 It buckets 64bit numbers using the first 20 bits.
@@ -30,3 +27,5 @@ Why it's hard to beat the standard library:
 https://www.goinggo.net/2013/12/macro-view-of-map-internals-in-go.html
 
 https://github.com/golang/go/blob/master/src/runtime/hashmap.go
+
+would be interesting to bench against minimal perfect hashing e.g. https://github.com/alecthomas/mph

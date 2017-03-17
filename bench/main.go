@@ -41,16 +41,18 @@ func runWithAnagrams() {
 	}
 	p("checked valid")
 
-	for i := 0; i < 50; i++ {
+
 		for _, w := range words {
+			for i := 0; i < 50; i++ {
 			adv.GetAnagrams(w)
 		}
 	}
 
 	p("adv")
 
-	for i := 0; i < 50; i++ {
+
 		for _, w := range words {
+			for i := 0; i < 50; i++ {
 			basic.GetAnagrams(w)
 		}
 	}

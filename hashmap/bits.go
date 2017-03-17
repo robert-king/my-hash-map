@@ -2,7 +2,7 @@ package hashmap
 
 import "github.com/draffensperger/golp"
 
-var BitScoreCache [5000][5000]uint16 //constant once written, could be dedicated piece of readonly memory, shared by OS
+var BitScoreCache [60000]uint16 //constant once written, could be dedicated piece of readonly memory, shared by OS. Also can reduce size by using greedy algorithm in minimumDistinguishingBits
 
 func diffBit(a, b, i uint64) bool {
 	return (a >> i) & 1 != (b >> i) & 1
@@ -52,14 +52,19 @@ func minimumDistinguishingBits(nums []uint64) (bits []uint16) {
 		[]uint16{2},
 		[]uint16{3},
 		[]uint16{4},
-		[]uint16{0,1},
-		[]uint16{0,2},
 		[]uint16{5},
-		[]uint16{1,2},
-		[]uint16{0,3},
 		[]uint16{6},
 		[]uint16{7},
 		[]uint16{8},
+		[]uint16{9},
+
+		[]uint16{0,1},
+		[]uint16{0,2},
+
+		[]uint16{1,2},
+		[]uint16{0,3},
+
+
 		[]uint16{0,4},
 		[]uint16{1,3},
 		[]uint16{1,4},
@@ -72,7 +77,7 @@ func minimumDistinguishingBits(nums []uint64) (bits []uint16) {
 		[]uint16{2,5},
 		[]uint16{0,6},
 		[]uint16{0,7},
-		[]uint16{9},
+
 		[]uint16{0,2,3},
 		[]uint16{2,6},
 		[]uint16{1,7},
@@ -146,13 +151,13 @@ func minimumDistinguishingBits(nums []uint64) (bits []uint16) {
 func addToBitScoreCash(num uint64, bits []uint16, score uint16) {
 	bitsNum := bitsToInt(bits)
 	matchedBits := bitsNum & uint16(num)
-	BitScoreCache[bitsNum][matchedBits] = score
+	BitScoreCache[bitsNum+4100*matchedBits] = score
 }
 
 func bitScore(num uint64, bits []uint16) (score uint16) {
-	for _, bit := range bits {
+	for i, bit := range bits {
 		if (num >> bit) & 1 == 1 {
-			score += 1 << bit
+			score += 1 << uint16(i)
 		}
 	}
 	addToBitScoreCash(num, bits, score)
