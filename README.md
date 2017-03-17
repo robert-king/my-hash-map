@@ -1,5 +1,9 @@
 # my-hash-map
 
+Toy hashmap that can be faster than STD-Lib in some situations.
+It's a bit dangerous - e.g. uint16 overflows possible, and it doesn't allow inserts or anything.
+Would probably be hard to make it general purpose, although the idea of reducing collisions by distinguishing between bits is interesting because it allows compression / focus on only important parts of the keys, relative to other keys.
+
 Performance:
 
 Average read speed compared to STD-Lib for 178693 words anagrams:
