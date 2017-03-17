@@ -2,9 +2,9 @@ package main
 
 import (
 	"fmt"
-	"time"
 	"github.com/pkg/profile"
 	"github.com/robert-king/fast-anagram/algorithms"
+	"time"
 )
 
 var now time.Time
@@ -41,25 +41,22 @@ func runWithAnagrams() {
 	}
 	p("checked valid")
 
-
-		for _, w := range words {
-			for i := 0; i < 50; i++ {
+	for _, w := range words {
+		for i := 0; i < 50; i++ {
 			adv.GetAnagrams(w)
 		}
 	}
 
 	p("adv")
 
-
-		for _, w := range words {
-			for i := 0; i < 50; i++ {
+	for _, w := range words {
+		for i := 0; i < 50; i++ {
 			basic.GetAnagrams(w)
 		}
 	}
 
 	p("basic")
 }
-
 
 func main() {
 	defer profile.Start().Stop()

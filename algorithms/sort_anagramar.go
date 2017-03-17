@@ -1,6 +1,5 @@
 package algorithms
 
-
 type SortAnagrammar struct {
 	m map[string][]string
 }

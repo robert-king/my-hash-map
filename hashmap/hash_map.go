@@ -1,20 +1,20 @@
 package hashmap
 
 const numOnes = uint8(20)
-const ones = uint32(1 << numOnes - 1)
+const ones = uint32(1<<numOnes - 1)
 
 type Info struct {
 	bitNum uint16
-	start uint32
+	start  uint32
 }
 
 type Map struct {
-	info [ones+1]Info
+	info [ones + 1]Info
 }
 
 func NewMap(hashes []uint64) (*Map, uint32) {
-	var collisions [ones+1][]uint64
-	var info [ones+1]Info
+	var collisions [ones + 1][]uint64
+	var info [ones + 1]Info
 
 	for _, hash := range hashes {
 		part := uint32(hash) & ones

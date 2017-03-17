@@ -10,6 +10,6 @@ func ReadWords() ([]string, error) {
 	if err != nil {
 		return nil, err
 	}
-	words := strings.Split(string(data),"\n")
+	words := strings.Split(string(data), "\n")
 	return words, nil
 }

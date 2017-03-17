@@ -1,6 +1,5 @@
 package algorithms
 
-
 type PrimeBasicAnagrammar struct {
 	m map[uint64][]string
 }

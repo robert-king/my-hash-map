@@ -1,22 +1,22 @@
 package algorithms
 
 import (
-	"github.com/draffensperger/golp"
 	"fmt"
+	"github.com/draffensperger/golp"
 )
 
 const numOnes = uint64(20)
-const ones = uint64(1 << numOnes - 1)
+const ones = uint64(1<<numOnes - 1)
 
 func diffBit(a, b, i uint64) bool {
-	return (a >> i) & 1 != (b >> i) & 1
+	return (a>>i)&1 != (b>>i)&1
 }
 
 func differentBits(a, b uint64) (ints []uint64) {
 	if a < b {
-		a,b = b,a
+		a, b = b, a
 	}
-	for i := uint64(0); a >> i > 0; i++ {
+	for i := uint64(0); a>>i > 0; i++ {
 		if diffBit(a, b, i) {
 			ints = append(ints, i)
 		}
@@ -48,53 +48,53 @@ func minimumDistinguishingBits(nums []uint64) (bits []uint16) {
 		[]uint16{2},
 		[]uint16{3},
 		[]uint16{4},
-		[]uint16{0,1},
-		[]uint16{0,2},
+		[]uint16{0, 1},
+		[]uint16{0, 2},
 		[]uint16{5},
-		[]uint16{1,2},
-		[]uint16{0,3},
+		[]uint16{1, 2},
+		[]uint16{0, 3},
 		[]uint16{6},
 		[]uint16{7},
 		[]uint16{8},
-		[]uint16{0,4},
-		[]uint16{1,3},
-		[]uint16{1,4},
-		[]uint16{2,3},
-		[]uint16{0,5},
-		[]uint16{2,4},
-		[]uint16{1,5},
-		[]uint16{0,1,2},
-		[]uint16{0,1,3},
-		[]uint16{2,5},
-		[]uint16{0,6},
-		[]uint16{0,7},
+		[]uint16{0, 4},
+		[]uint16{1, 3},
+		[]uint16{1, 4},
+		[]uint16{2, 3},
+		[]uint16{0, 5},
+		[]uint16{2, 4},
+		[]uint16{1, 5},
+		[]uint16{0, 1, 2},
+		[]uint16{0, 1, 3},
+		[]uint16{2, 5},
+		[]uint16{0, 6},
+		[]uint16{0, 7},
 		[]uint16{9},
-		[]uint16{0,2,3},
-		[]uint16{2,6},
-		[]uint16{1,7},
-		[]uint16{1,6},
-		[]uint16{3,5},
-		[]uint16{2,7},
+		[]uint16{0, 2, 3},
+		[]uint16{2, 6},
+		[]uint16{1, 7},
+		[]uint16{1, 6},
+		[]uint16{3, 5},
+		[]uint16{2, 7},
 		[]uint16{10},
-		[]uint16{1,3,8},
-		[]uint16{4,7},
-		[]uint16{3,6},
-		[]uint16{0,2,11},
-		[]uint16{3,8},
-		[]uint16{1,2,5},
-		[]uint16{0,3,4},
-		[]uint16{0,1,12},
-		[]uint16{0,1,2,5},
-		[]uint16{4,6},
-		[]uint16{3,4},
-		[]uint16{0,10},
-		[]uint16{0,8},
-		[]uint16{0,1,4},
+		[]uint16{1, 3, 8},
+		[]uint16{4, 7},
+		[]uint16{3, 6},
+		[]uint16{0, 2, 11},
+		[]uint16{3, 8},
+		[]uint16{1, 2, 5},
+		[]uint16{0, 3, 4},
+		[]uint16{0, 1, 12},
+		[]uint16{0, 1, 2, 5},
+		[]uint16{4, 6},
+		[]uint16{3, 4},
+		[]uint16{0, 10},
+		[]uint16{0, 8},
+		[]uint16{0, 1, 4},
 		[]uint16{11},
-		[]uint16{1,2,3},
-		[]uint16{0,2,4},
-		[]uint16{1,2,9},
-		[]uint16{3,12},
+		[]uint16{1, 2, 3},
+		[]uint16{0, 2, 4},
+		[]uint16{1, 2, 9},
+		[]uint16{3, 12},
 	}
 
 	for _, likelySolution := range likelySolutions {
@@ -141,7 +141,7 @@ func minimumDistinguishingBits(nums []uint64) (bits []uint16) {
 
 func bitScore(num uint64, bits []uint16) (score uint16) {
 	for _, bit := range bits {
-		if (num >> bit) & 1 == 1 {
+		if (num>>bit)&1 == 1 {
 			score += 1 << bit
 		}
 	}
@@ -160,16 +160,16 @@ func maxBitScore(nums []uint64, bits []uint16) uint16 {
 }
 
 type Locator struct {
-	collisions [ones+1][]uint64
-	bits [ones+1][]uint16
-	starts [ones+1]uintptr
-	maxIndex uintptr
+	collisions [ones + 1][]uint64
+	bits       [ones + 1][]uint16
+	starts     [ones + 1]uintptr
+	maxIndex   uintptr
 }
 
 func NewLocator(hashes []uint64) *Locator {
-	var collisions [ones+1][]uint64
-	var bits [ones+1][]uint16
-	var starts [ones+1]uintptr
+	var collisions [ones + 1][]uint64
+	var bits [ones + 1][]uint16
+	var starts [ones + 1]uintptr
 
 	for _, hash := range hashes {
 		part := hash & ones
@@ -194,9 +194,9 @@ func NewLocator(hashes []uint64) *Locator {
 	}
 	locator := &Locator{
 		collisions: collisions,
-		bits: bits,
-		starts: starts,
-		maxIndex: start,
+		bits:       bits,
+		starts:     starts,
+		maxIndex:   start,
 	}
 	return locator
 }
@@ -204,7 +204,7 @@ func NewLocator(hashes []uint64) *Locator {
 func (locator *Locator) UpdateStarts(start, size uintptr) {
 	for i := range locator.starts {
 		if locator.starts[i] > 0 {
-			locator.starts[i] =  start + locator.starts[i] * size
+			locator.starts[i] = start + locator.starts[i]*size
 		}
 	}
 }
@@ -214,7 +214,7 @@ func (locator *Locator) Index(num uint64) uintptr {
 	remaining := num >> numOnes
 	start := locator.starts[part]
 	bits := locator.bits[part]
-	offset := 24*uintptr(bitScore(remaining, bits))
+	offset := 24 * uintptr(bitScore(remaining, bits))
 	return start + offset
 }
 
@@ -227,5 +227,5 @@ func (locator *Locator) Index1(num uint64) uintptr {
 	if len(locator.collisions[part]) == 1 {
 		return locator.starts[part]
 	}
-	return locator.starts[part] + uintptr(bitScore(num >> numOnes, locator.bits[part]))
+	return locator.starts[part] + uintptr(bitScore(num>>numOnes, locator.bits[part]))
 }

@@ -1,8 +1,8 @@
 package algorithms
 
 import (
-	"testing"
 	"fmt"
+	"testing"
 	"time"
 )
 

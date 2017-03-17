@@ -1,8 +1,8 @@
 package algorithms
 
 import (
-	"strings"
 	"sort"
+	"strings"
 )
 
 func SortString(w string) string {
@@ -10,4 +10,3 @@ func SortString(w string) string {
 	sort.Strings(s)
 	return strings.Join(s, "")
 }
-

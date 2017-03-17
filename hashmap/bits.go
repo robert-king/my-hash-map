@@ -5,14 +5,14 @@ import "github.com/draffensperger/golp"
 var BitScoreCache [60000]uint16 //constant once written, could be dedicated piece of readonly memory, shared by OS. Also can reduce size by using greedy algorithm in minimumDistinguishingBits
 
 func diffBit(a, b, i uint64) bool {
-	return (a >> i) & 1 != (b >> i) & 1
+	return (a>>i)&1 != (b>>i)&1
 }
 
 func differentBits(a, b uint64) (ints []uint64) {
 	if a < b {
-		a,b = b,a
+		a, b = b, a
 	}
-	for i := uint64(0); a >> i > 0; i++ {
+	for i := uint64(0); a>>i > 0; i++ {
 		if diffBit(a, b, i) {
 			ints = append(ints, i)
 		}
@@ -58,52 +58,51 @@ func minimumDistinguishingBits(nums []uint64) (bits []uint16) {
 		[]uint16{8},
 		[]uint16{9},
 
-		[]uint16{0,1},
-		[]uint16{0,2},
+		[]uint16{0, 1},
+		[]uint16{0, 2},
 
-		[]uint16{1,2},
-		[]uint16{0,3},
+		[]uint16{1, 2},
+		[]uint16{0, 3},
 
+		[]uint16{0, 4},
+		[]uint16{1, 3},
+		[]uint16{1, 4},
+		[]uint16{2, 3},
+		[]uint16{0, 5},
+		[]uint16{2, 4},
+		[]uint16{1, 5},
+		[]uint16{0, 1, 2},
+		[]uint16{0, 1, 3},
+		[]uint16{2, 5},
+		[]uint16{0, 6},
+		[]uint16{0, 7},
 
-		[]uint16{0,4},
-		[]uint16{1,3},
-		[]uint16{1,4},
-		[]uint16{2,3},
-		[]uint16{0,5},
-		[]uint16{2,4},
-		[]uint16{1,5},
-		[]uint16{0,1,2},
-		[]uint16{0,1,3},
-		[]uint16{2,5},
-		[]uint16{0,6},
-		[]uint16{0,7},
-
-		[]uint16{0,2,3},
-		[]uint16{2,6},
-		[]uint16{1,7},
-		[]uint16{1,6},
-		[]uint16{3,5},
-		[]uint16{2,7},
+		[]uint16{0, 2, 3},
+		[]uint16{2, 6},
+		[]uint16{1, 7},
+		[]uint16{1, 6},
+		[]uint16{3, 5},
+		[]uint16{2, 7},
 		[]uint16{10},
-		[]uint16{1,3,8},
-		[]uint16{4,7},
-		[]uint16{3,6},
-		[]uint16{0,2,11},
-		[]uint16{3,8},
-		[]uint16{1,2,5},
-		[]uint16{0,3,4},
-		[]uint16{0,1,12},
-		[]uint16{0,1,2,5},
-		[]uint16{4,6},
-		[]uint16{3,4},
-		[]uint16{0,10},
-		[]uint16{0,8},
-		[]uint16{0,1,4},
+		[]uint16{1, 3, 8},
+		[]uint16{4, 7},
+		[]uint16{3, 6},
+		[]uint16{0, 2, 11},
+		[]uint16{3, 8},
+		[]uint16{1, 2, 5},
+		[]uint16{0, 3, 4},
+		[]uint16{0, 1, 12},
+		[]uint16{0, 1, 2, 5},
+		[]uint16{4, 6},
+		[]uint16{3, 4},
+		[]uint16{0, 10},
+		[]uint16{0, 8},
+		[]uint16{0, 1, 4},
 		[]uint16{11},
-		[]uint16{1,2,3},
-		[]uint16{0,2,4},
-		[]uint16{1,2,9},
-		[]uint16{3,12},
+		[]uint16{1, 2, 3},
+		[]uint16{0, 2, 4},
+		[]uint16{1, 2, 9},
+		[]uint16{3, 12},
 	}
 
 	for _, likelySolution := range likelySolutions {
@@ -156,7 +155,7 @@ func addToBitScoreCash(num uint64, bits []uint16, score uint16) {
 
 func bitScore(num uint64, bits []uint16) (score uint16) {
 	for i, bit := range bits {
-		if (num >> bit) & 1 == 1 {
+		if (num>>bit)&1 == 1 {
 			score += 1 << uint16(i)
 		}
 	}
@@ -174,4 +173,3 @@ func maxBitScore(nums []uint64, bits []uint16) uint16 {
 	}
 	return mx
 }
-

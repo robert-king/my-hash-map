@@ -5,12 +5,12 @@ import (
 )
 
 type PrimeAdvancedAnagrammar struct {
-	m [][]string
+	m       [][]string
 	locator *hashmap.Map
 }
 
 func BuildPrimeAdvancedAnagrammar(words []string) PrimeAdvancedAnagrammar {
-	hashesMap := make(map[uint64]bool,0)
+	hashesMap := make(map[uint64]bool, 0)
 	for _, word := range words {
 		hashesMap[PrimeProduct(word)] = true
 	}
@@ -28,7 +28,7 @@ func BuildPrimeAdvancedAnagrammar(words []string) PrimeAdvancedAnagrammar {
 	println(len(words))
 	println(len(grams))
 	return PrimeAdvancedAnagrammar{
-		m: grams,
+		m:       grams,
 		locator: locator,
 	}
 }
