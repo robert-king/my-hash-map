@@ -47,3 +47,5 @@ https://github.com/golang/go/blob/master/src/runtime/hashmap.go
 would be interesting to bench against minimal perfect hashing e.g. https://github.com/alecthomas/mph
 
 good link explaining std-lib implementation https://www.youtube.com/watch?v=Tl7mi9QmLns
+
+Edit: There is now a paper on Learned Index Structures. While it struggles with the last mile, perhaps this bit disinguishing technique can be used on the last mile. although as they mention, B-Tree is hard to beat.
